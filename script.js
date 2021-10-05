@@ -21,7 +21,6 @@ $(document).ready(function() {
 
         $.ajax({url:queryURL})
         .then(function(response) {
-            console.log(response)
             var results = response.data
             for (var i = 0; i < results.length; i++) {
                 var animalDiv = $("<div class=\"animal-item\">")
@@ -35,8 +34,8 @@ $(document).ready(function() {
                 animalImage.attr("src", still)
                 animalImage.attr("data-still", still)
                 animalImage.attr("data-animate", animated)
-                animalImage.attr("data-isAnimated", "false")
-                animalImage.addClass("animal-iamge")
+                animalImage.attr("data-isanimated", "false")
+                animalImage.addClass("animal-item")
 
                 animalDiv.append(p)
                 animalDiv.append(animalImage)
@@ -45,17 +44,25 @@ $(document).ready(function() {
         })
     })
 
+    $("body").on("click", "img", function(event) {
+        event.preventDefault()
+
+        if ($(this).data("isanimated") === "true") {
+            $(this).attr("src", $(this).attr("data-still"))
+            $(this).data("isanimated", "false")
+        }
+        else {
+            $(this).attr("src", $(this).attr("data-animate"))
+            $(this).data("isanimated", "true")
+        }
+    })
+
+    $("#add-animal").on("click", function(event) {
+        event.preventDefault()
+        animals.push($("#animal-input").val())
+        populateButtons(animals, "animal-button", "#animal-buttons")
+    })
+
     populateButtons(animals, "animal-button", "#animal-buttons")
 
 });
-
-/*
-if (state == "false") {
-    $(this).attr("src", $(this).attr("data-animate"))
-    $(this).attr("data-isAnimated", "true")
-}
-else {
-    $(this).attr("src", $(this).attr("data-still"))
-    $(this).attr("data-isAnimated", "false")
-}
-*/
